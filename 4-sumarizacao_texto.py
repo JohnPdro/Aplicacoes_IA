@@ -1,0 +1,25 @@
+from goose3 import Goose
+from sumy.parsers.plaintext import PlaintextParser
+from sumy.nlp.tokenizers import Tokenizer
+from sumy.summarizers.luhn import LuhnSummarizer
+
+# 1 - Coletando o Artigo
+g = Goose()
+url = 'https://blog.duolingo.com/pt/aprender-idiomas-com-chatbots/'
+noticia = g.extract(url)
+print(noticia.cleaned_text)
+
+# 2 - Trabalhando com a Sumarização
+parser = PlaintextParser.from_string(
+    noticia.cleaned_text,
+    Tokenizer('portuguese')
+)
+
+sumarizador = LuhnSummarizer()
+resumo = sumarizador(
+    parser.document,
+    2
+)
+
+for sentenca in resumo :
+    print(sentenca)

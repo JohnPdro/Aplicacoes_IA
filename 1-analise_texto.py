@@ -1,6 +1,11 @@
 import os
 import nltk
 from nltk import sent_tokenize, word_tokenize
+from nltk.probability import FreqDist
+from wordcloud import WordCloud, STOPWORDS
+import matplotlib.pyplot as plt
+import numpy as np
+from PIL import Image
 
 # nltk.download('punkt')
 # nltk.download('punkt_tab')
@@ -18,3 +23,37 @@ print(len(sent_tokens))
 word_tokens = word_tokenize(texto)
 print(word_tokens)
 print(len(word_tokens))
+
+# 3 - Frequência de Distribuição
+fdist = FreqDist(word_tokens)
+# print(fdist)
+print(fdist.most_common(10))
+fdist.plot(10)
+
+# 4 - WordCloud / WordCloud Customizado
+def plot_cloud(wordcloud) :
+    plt.figure(figsize=(40, 30))
+    plt.imshow(wordcloud)
+    plt.axis("off")
+    plt.show()
+
+# plot_cloud(wordcloud)
+
+mascara = np.array(
+    Image.open("data/joinha.png")
+)
+
+wordcloud = WordCloud(
+    width = 3000,
+    height = 2000,
+    random_state = 1,
+    background_color = 'salmon',
+    colormap = 'Pastel1',
+    collocations = False,
+    stopwords = STOPWORDS,
+    mask = mascara
+).generate(texto)
+
+print(mascara)
+
+plot_cloud(wordcloud)
